@@ -137,3 +137,31 @@ Before presenting code to the user as complete, ensure:
 3. Edge cases (invalid coordinates, null birth times, leap years) are covered.
 4. Structured logging is used. No debug `console.log` statements are left.
 5. Verification commands (e.g., curl, test scripts) are provided and execute successfully.
+
+---
+
+## 7. Structured Logging Standards
+
+All services must use clean, structured logging instead of raw console statements.
+
+### 7.1 Node.js / TypeScript Standards (Main Backend)
+- **Library**: `pino` (native to Fastify).
+- **Format**: Structured JSON in production for searchability (e.g. Datadog, ELK). Pretty printing is enabled in development for readability.
+- **Log Levels**: Use appropriate levels:
+  - `logger.debug()` for transient, granular debugging (SQL queries, cache lookups).
+  - `logger.info()` for lifecycle events (server boot, successful payments, completed jobs).
+  - `logger.warn()` for degradations (cache miss, transient retries).
+  - `logger.error()` for failures that require action (gRPC connection down, DB constraint violations).
+
+### 7.2 Python Standards (Calc, Report, LLM Engines)
+- **Library**: Python standard library `logging` module, wrapped in our custom `/utils/logger.py` module.
+- **Format**: Outputs standard human-readable format in local development and structured JSON in production when `JSON_LOGGING=true`.
+- **Usage**:
+  ```python
+  from utils.logger import get_logger
+  
+  logger = get_logger("service-name")
+  logger.info("Service initialized", extra={"port": 50051})
+  logger.error("Failed to execute calculation", exc_info=True)
+  ```
+

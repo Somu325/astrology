@@ -1,0 +1,88 @@
+syntax = "proto3";
+
+package astro.calculation.v1;
+
+option go_package = "github.com/your-org/astro-platform/proto/gen/go;astropb";
+
+service AstroCalculationService {
+  rpc CalculateNatalChart (NatalChartRequest) returns (NatalChartResponse);
+  rpc CalculateTransits (TransitRequest) returns (TransitResponse);
+  rpc CalculateSynastry (SynastryRequest) returns (SynastryResponse);
+  rpc BatchCalculate (stream NatalChartRequest) returns (stream NatalChartResponse);
+}
+
+message NatalChartRequest {
+  double latitude = 1;
+  double longitude = 2;
+  int64 birth_timestamp_utc = 3;
+  string house_system = 4;
+  string ayanamsa = 5;
+  repeated string requested_points = 6;
+}
+
+message PlanetPosition {
+  string planet = 1;
+  double longitude = 2;
+  double latitude = 3;
+  double speed = 4;
+  bool is_retrograde = 5;
+  string sign = 6;
+  int32 house = 7;
+  double degree_in_sign = 8;
+  string nakshatra = 9;
+  int32 nakshatra_pada = 10;
+}
+
+message HouseCusp {
+  int32 house_number = 1;
+  double longitude = 2;
+  string sign = 3;
+  double degree_in_sign = 4;
+}
+
+message Aspect {
+  string planet_a = 1;
+  string planet_b = 2;
+  string aspect_type = 3;
+  double orb = 4;
+  bool is_applying = 5;
+}
+
+message ArabicLot {
+  string name = 1;
+  double longitude = 2;
+  string sign = 3;
+  int32 house = 4;
+}
+
+message NatalChartResponse {
+  repeated PlanetPosition planets = 1;
+  repeated HouseCusp houses = 2;
+  repeated Aspect aspects = 3;
+  repeated ArabicLot lots = 4;
+  string chart_system = 5;
+  int64 calculated_at = 6;
+}
+
+message TransitRequest {
+  NatalChartRequest natal = 1;
+  int64 transit_timestamp_utc = 2;
+  repeated string requested_points = 3;
+}
+
+message TransitResponse {
+  repeated PlanetPosition transit_planets = 1;
+  repeated Aspect transiting_aspects = 2;
+  int64 calculated_at = 3;
+}
+
+message SynastryRequest {
+  NatalChartRequest chart_a = 1;
+  NatalChartRequest chart_b = 2;
+}
+
+message SynastryResponse {
+  NatalChartResponse chart_a = 1;
+  NatalChartResponse chart_b = 2;
+  repeated Aspect inter_chart_aspects = 3;
+}
