@@ -1,0 +1,43 @@
+# Environment files
+.env
+.env.local
+.env.*.local
+**/.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+dist/
+
+# Node
+node_modules/
+.next/
+.turbo/
+dist/
+build/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# Ephemeris data (large binary files)
+*.se1
+
+# Generated protobuf files
+*_pb2.py
+*_pb2_grpc.py
+*_pb2.pyi
+*.pb.go
+
+# Secrets
+*.pem
+*.key
+*.p12

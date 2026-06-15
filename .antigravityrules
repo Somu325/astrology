@@ -1,0 +1,57 @@
+# Antigravity Rules — Astrology Platform
+
+This file contains instructions that Antigravity (and other agentic assistants) MUST read and follow when making changes or writing new code in this workspace.
+
+---
+
+## 1. Project Context & Constraints
+
+- **Decoupled Monorepo**: Keep services decoupled. Never import across services directly. Code sharing must happen strictly through shared stubs (e.g. gRPC files generated from `/proto/`) or local packages (e.g., `packages/shared-types`).
+- **Stateless Engines**: The Calculation Engine, LLM Interface, and Report Engine must remain stateless. Persistence and session orchestration are managed exclusively by the Main Backend.
+- **Protocol Enforcements**:
+  - Main Backend <─> Calc Engine: gRPC only.
+  - Report / LLM <─> Calc Engine: gRPC only.
+  - Async Jobs: BullMQ queues.
+  - External API outputs: Wrap in consistent envelope `{ success: true, data }` or `{ success: false, error: { code, message } }`.
+
+---
+
+## 2. Technical Stack Rules
+
+### 2.1 TypeScript (Main Backend & Web App)
+- Use TypeScript strictly. Always run `pnpm typecheck` or `tsc --noEmit` to verify type safety.
+- Database: Drizzle ORM. Any DB schema modification must be generated (`drizzle-kit generate`) and run (`tsx src/db/migrate.ts`).
+- Route Schema Validation: Use Zod schemas in Fastify route definitions.
+
+### 2.2 Python (Calculation, Report, LLM Engines)
+- Use Python 3.12 with type annotations.
+- Ephemeris: Swiss Ephemeris (`pyswisseph`). Wrap calls in `concurrent.futures` ProcessPoolExecutor for true CPU parallelization during batch calculation tasks.
+- Keep dependencies updated in local `pyproject.toml` or `requirements.txt`.
+
+---
+
+## 3. UI/UX & Design System Rules
+
+**AESTHETICS ARE AN ABSOLUTE PRIORITY.** Never produce basic, plain, or unstyled UI components.
+- **Typography**: Google Fonts Inter or Outfit. No default browser serif fonts.
+- **Harmonious Colors**: Use premium curated HSL/RGB palettes (e.g., slate, violet, charcoal, amber). No generic primary blue/red/green.
+- **Glassmorphism**: Implement semi-transparent cards with `backdrop-filter: blur()`, subtle white borders (`border: 1px solid rgba(255, 255, 255, 0.1)`), and dynamic gradients.
+- **Micro-Animations**: Hover states, smooth scale increases, transitions, and subtle opacity fades are mandatory.
+- **Interactive SVG Charts**: Natal charts must be rendered as SVGs dynamically, with interactive click tooltips showing details. No static placeholder images.
+
+---
+
+## 4. Environment Variables & Secrets
+- Never commit `.env` files. Ensure `.gitignore` ignores all `.env` files.
+- Whenever adding a new environment variable, immediately update:
+  1. The target service's `.env.example` file.
+  2. The global documentation file: `/docs/ENV-VARIABLES.md`.
+
+---
+
+## 5. Definition of Done (DoD) Verification
+Before completing a task, you must verify:
+- Code compiles, formats, and lints without error.
+- All edge cases are covered (e.g., coordinates exactly at 0, birth times not provided, timezone mismatch).
+- No debug `console.log` or print statements remain in production code. Use structured loggers.
+- Provide verification validation commands (`curl`, tests, scripts) and output logs in your final report.
