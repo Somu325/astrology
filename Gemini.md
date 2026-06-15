@@ -165,3 +165,16 @@ All services must use clean, structured logging instead of raw console statement
   logger.error("Failed to execute calculation", exc_info=True)
   ```
 
+---
+
+## 8. Multi-AI Tool Handoff Protocol
+
+When working in this repository, you must integrate with the cross-tool handoff pipeline:
+- **Read Active Context**: Read [AI-STATE.md](AI-STATE.md) at the start of your turn to align on goals, task lists, and previous logs.
+- **Run Diagnostics**: Run `bash scripts/ai-diagnostic.sh` to confirm everything builds and local services are active.
+- **Close the Session**: Before concluding your task or response, update the checklists in [AI-STATE.md](AI-STATE.md) (marking items complete) and write a session log detailing:
+  1. What files were changed and what was completed.
+  2. Any new environment variables introduced.
+  3. Clear instructions on next actions for the incoming AI assistant.
+
+

@@ -57,3 +57,15 @@ See each service README in `services/*/README.md` and `apps/*/README.md`.
 - `docs/ENV-VARIABLES.md` — All environment variables
 - `Gemini.md` — LLM/Gemini instructions for codebase
 - `Agents.md` — Subagent roles & collaboration
+- `PROJECT-STRUCTURE.md` — Monorepo folders & responsibilities
+- `AI-STATE.md` — Living AI Handoff Ledger & active task checklists
+
+## AI Agent Integration & Session Handoffs
+This codebase is configured to work seamlessly with different AI coding assistants (GitHub Copilot, Cursor, Windsurf, Claude Code, etc.).
+
+1. **Check Environment Health**: Run the environment diagnostic check:
+   ```bash
+   bash scripts/ai-diagnostic.sh
+   ```
+2. **Coordinate Progress**: When switching between AI tools or ending a development session, always read and update the active checklists in `AI-STATE.md` to preserve session context and coordinate next steps.
+

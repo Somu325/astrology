@@ -1,0 +1,10 @@
+# Windsurf AI Agent Rules — Astrology Platform
+
+When executing tasks in this workspace, follow these specific guidelines:
+
+1. **System Boundaries**: Respect the decoupling of microservices. Check [PROJECT-STRUCTURE.md](PROJECT-STRUCTURE.md) for folders and their roles.
+2. **Coding and Rules Reference**:
+   - Check [.antigravityrules](.antigravityrules) for project style configurations.
+   - Follow the design framework (HSL colors, Outfit/Inter typography, glassmorphism) in [Gemini.md](Gemini.md).
+3. **Session Tracking**: Locate active goals and checklists in [AI-STATE.md](AI-STATE.md). Run `bash scripts/ai-diagnostic.sh` at the beginning of a session to verify health.
+4. **Concluding Sessions**: Log completed tasks in [AI-STATE.md](AI-STATE.md) and document what needs to be tackled next in the Handoff Log before ending your execution block.

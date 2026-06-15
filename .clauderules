@@ -1,0 +1,11 @@
+# Claude Code Rules — Astrology Platform
+
+When working in this repository, Claude MUST follow these developer guidelines:
+
+1. **Read Global Configurations**:
+   - Adhere to the code boundary rules in [.antigravityrules](.antigravityrules).
+   - Follow the design and logging specifications in [Gemini.md](Gemini.md).
+   - Check the active phase, checklists, and handoff log in [AI-STATE.md](AI-STATE.md).
+2. **Decoupled Architecture**: Maintain microservice isolation. Never write direct imports or references across services.
+3. **Pino/JSON Loggers**: Never use print/console.log in production. Use the configured JSON loggers.
+4. **Handoff Procedures**: When concluding a session, update the checklists in [AI-STATE.md](AI-STATE.md) and record a handoff entry detailing completed tasks, open questions, and next steps.
